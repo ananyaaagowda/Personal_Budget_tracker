@@ -1,0 +1,67 @@
+<%- include("partials/header.ejs") %>
+<title>Dashboard</title>
+<style>
+    body {
+        background-color: #e4e9fd;
+        background-image: none;
+    }
+</style>
+</head>
+
+<body>
+    <%- include("partials/navBar.ejs") %>
+    <div class="bar-chart">
+        <h1>Monthly Overview</h1>
+        <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+   
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            const response = await fetch('/monthlyData');
+            const data = await response.json();
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            label: 'Income',
+                            data: data.income,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Expenditure',
+                            data: data.expenditure,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Savings',
+                            data: data.savings,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    </div>
+    </div>
+
+    <%- include("partials/footer.ejs") %>
